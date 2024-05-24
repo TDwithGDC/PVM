@@ -11,7 +11,6 @@ public class CameraController : MonoBehaviour
     private void Awake()
     {
         cameraTrans = transform;
-        Debug.Log("测试");
     }
 
     private void Update()

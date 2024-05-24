@@ -9,7 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8200831871966006915}
+  - component: {fileID: 7335686559043239061}
   - component: {fileID: 6711799009522811287}
+  - component: {fileID: 4825949180839097597}
   m_Layer: 9
   m_Name: mucaijiagongchang
   m_TagString: Untagged
@@ -32,6 +34,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7335686559043239061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154051431050458421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dec1d56f93cfd84db5f4dbbeeb9fcc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HP: 0
+  isConnectToMainBase: 0
+  running: 1
+  efficiency: 0.8
 --- !u!212 &6711799009522811287
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -82,6 +100,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &4825949180839097597
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154051431050458421}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.135, y: 0.135, z: 0.05}
+  m_Center: {x: 0, y: 0, z: 0.027}
 --- !u!1 &308132095282408167
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,7 +123,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2048137228851640942}
   - component: {fileID: 280003284588438641}
-  - component: {fileID: 8939629531575354220}
   m_Layer: 9
   m_Name: mucaijiagongchang
   m_TagString: Untagged
@@ -164,16 +194,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!65 &8939629531575354220
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 308132095282408167}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.1, y: 2.7, z: 0.5}
-  m_Center: {x: 0, y: 0, z: -0.27}
