@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5604ceddb4163e4e9d896a967765b67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingType: 7
   HP: 0
   isConnectToMainBase: 0
   running: 1

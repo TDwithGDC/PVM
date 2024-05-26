@@ -17,10 +17,22 @@ public class UIManager : MonoBehaviour
     public List<Image> allBuildings;//所有的建筑选卡
     public Sprite defaultSprite;//没有选择，默认图片
     public Button startButton;//开始游戏按钮
+    public List<Button> cardSlotsInGame;//游戏开始后的卡槽
+
+    //建筑提示框
+    public List<GameObject> tips;//所有建筑的提示框
+    public Dictionary<BuildingTypes, GameObject> tipsDict;//用于精确获取提示框
+    public GameObject currentTip;//当前提示框
 
     private void Start()
     {
         currentPage = 1;
+        //tipsDict初始化
+        tipsDict = new Dictionary<BuildingTypes, GameObject>();
+        for (int i = 0; i < tips.Count; i++)
+        {
+            tipsDict.Add((BuildingTypes)i, tips[i]);
+        }
     }
 
     private void Update()
@@ -45,10 +57,93 @@ public class UIManager : MonoBehaviour
                 {
                     GameManager.Game.cardSlotsInGame.transform.GetChild(i).GetChild(1).gameObject.SetActive(false);
                 }
-                GameManager.Game.selectedBuilding = null;
+                GameManager.Game.selectedBuildingToBuild = null;
+            }
+            if (currentTip != null)
+            {
+                UpdateTip();
             }
         }
     }
+
+    #region 提示框
+
+    /// <summary>
+    /// 关闭所有提示框
+    /// </summary>
+
+    public void CloseAllTips()
+    {
+        for (int i = 0; i < tips.Count; i++)
+        {
+            tips[i].SetActive(false);
+        }
+    }
+
+    /// <summary>
+    /// 更新提示框信息
+    /// </summary>
+
+    public void UpdateTip()
+    {
+        Building building = GameManager.Game.selectedBuilding.GetComponent<Building>();
+        //是否连接到主基地
+        Text text = currentTip.transform.Find("IsConnectedToMainBase").GetComponent<Text>();
+        text.text = building.isConnectToMainBase ? "连接到主基地" : "未连接到主基地";
+        //HP
+    }
+
+    /// <summary>
+    /// 运行的开关
+    /// </summary>
+
+    public void RunningButton()
+    {
+        Building building = GameManager.Game.selectedBuilding.GetComponent<Building>();
+        if (building.running)
+        {
+            building.running = false;
+            EventSystem.current.currentSelectedGameObject.transform.GetChild(0).GetComponent<Text>().text = "未运行";
+        }
+        else
+        {
+            building.running = true;
+            EventSystem.current.currentSelectedGameObject.transform.GetChild(0).GetComponent<Text>().text = "正在运行";
+        }
+    }
+
+    /// <summary>
+    /// 切换开采矿物资源类型
+    /// </summary>
+
+    public void ChangeResourcesType()
+    {
+        KuangJing k = GameManager.Game.selectedBuilding.GetComponent<KuangJing>();
+        Text text = currentTip.transform.Find("ChangeType").GetChild(1).GetComponent<Text>();
+        if (k.type==ResourcesTypes.Iron)
+        {
+            text.text = "开采的资源：煤";
+            k.type = ResourcesTypes.Coal;
+        }
+        else
+        {
+            text.text = "开采的资源：铁";
+            k.type = ResourcesTypes.Iron;
+        }
+    }
+
+    /// <summary>
+    /// 销毁建筑物
+    /// </summary>
+
+    public void DestroyBuilding()
+    {
+        Destroy(GameManager.Game.selectedBuilding);
+        CloseAllTips();
+        currentTip = null;
+    }
+
+    #endregion
 
     #region 选卡界面
 
@@ -173,7 +268,7 @@ public class UIManager : MonoBehaviour
                 GameManager.Game.cardSlotsInGame.transform.GetChild(i).GetChild(1).gameObject.SetActive(false);
             }
         }
-        GameManager.Game.selectedBuilding = selectedBuildings[int.Parse(EventSystem.current.currentSelectedGameObject.name) - 1];
+        GameManager.Game.selectedBuildingToBuild = selectedBuildings[int.Parse(EventSystem.current.currentSelectedGameObject.name) - 1];
         go.transform.GetChild(1).gameObject.SetActive(true);
     }
 

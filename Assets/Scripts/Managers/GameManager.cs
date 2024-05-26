@@ -17,10 +17,12 @@ public class GameManager : MonoBehaviour
     public GameObject map;//游戏地图
     public int gameStage;//游戏阶段
     public bool mainBasePlaced;//主基地是否放置
-    public GameObject selectedBuilding;//被选中的建筑
+    public GameObject selectedBuildingToBuild;//被选中的建筑
     public GameObject mainBase; // 主基地
     public GameObject buildingsSelector;//选卡UI
     public GameObject cardSlotsInGame;//第三阶段（游戏进行阶段）的卡槽
+
+    public GameObject selectedBuilding;//已选择的建筑
 
     private void Awake()
     {
@@ -35,7 +37,7 @@ public class GameManager : MonoBehaviour
         {
             if (!mainBasePlaced)
             {
-                selectedBuilding = mainBase;
+                selectedBuildingToBuild = mainBase;
             }
         }
         else if (gameStage == 2)//选卡阶段
@@ -43,11 +45,10 @@ public class GameManager : MonoBehaviour
             if (!buildingsSelector.activeSelf)
                 buildingsSelector.SetActive(true);
         }
-        // *预留*
-        // else if (gameStage==3)//开始游戏
-        // {
-        //     
-        // }
+        else if (gameStage == 3)//开始游戏
+        {
+            BuildingTip();
+        }
         PlaceBuilding();
     }
 
@@ -57,7 +58,7 @@ public class GameManager : MonoBehaviour
 
     private void PlaceBuilding()
     {
-        if (selectedBuilding)
+        if (selectedBuildingToBuild)
         {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
@@ -68,9 +69,9 @@ public class GameManager : MonoBehaviour
                     {
                         if (hit.collider.gameObject.layer == 8)
                         {
-                            GameObject mainBase = Instantiate(selectedBuilding, hit.collider.transform.GetChild(0).transform.position, hit.collider.transform.GetChild(0).transform.rotation);
+                            GameObject mainBase = Instantiate(selectedBuildingToBuild, hit.collider.transform.GetChild(0).transform.position, hit.collider.transform.GetChild(0).transform.rotation);
                             mainBase.transform.SetParent(hit.collider.transform.GetChild(0).transform);
-                            selectedBuilding = null;
+                            selectedBuildingToBuild = null;
                             gameStage++;
                             mainBasePlaced = true;
                         }
@@ -84,7 +85,7 @@ public class GameManager : MonoBehaviour
                     {
                         if (hit.collider.gameObject.layer == 8)
                         {
-                            GameObject go = Instantiate(selectedBuilding, hit.collider.transform.GetChild(0).transform.position, hit.collider.transform.GetChild(0).transform.rotation);
+                            GameObject go = Instantiate(selectedBuildingToBuild, hit.collider.transform.GetChild(0).transform.position, hit.collider.transform.GetChild(0).transform.rotation);
                             go.transform.SetParent(hit.collider.transform.GetChild(0).transform);
                             Debug.Log("放置了" + go.name);
                         }
@@ -105,5 +106,42 @@ public class GameManager : MonoBehaviour
         RaycastHit hit;
         Physics.Raycast(ray, out hit, Mathf.Infinity);
         return hit;
+    }
+
+    /// <summary>
+    /// 玩家可以点击建筑物查看属性，更改属性
+    /// </summary>
+
+    private void BuildingTip()
+    {
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())//左键
+        {
+            RaycastHit hit = RaycastFromMousePosition();
+            if (hit.collider)
+            {
+                if (hit.collider.gameObject.layer==9)//点击了建筑
+                {
+                    selectedBuildingToBuild = null;
+                    selectedBuilding = hit.collider.gameObject;
+                    //关掉所有的提示框，显示当前建筑物的提示框
+                    uiManager.CloseAllTips();
+                    Building building = hit.collider.GetComponent<Building>();
+                    GameObject tipGo = uiManager.tipsDict[building.buildingType];
+                    tipGo.SetActive(true);
+                    tipGo.transform.position = Input.mousePosition;
+                    uiManager.currentTip = tipGo;
+                }
+                else if (selectedBuildingToBuild == null)
+                {
+                    uiManager.CloseAllTips();
+                    selectedBuilding = null;
+                    for (int i = 0; i < uiManager.cardSlotsInGame.Count; i++)
+                    {
+                        uiManager.cardSlotsInGame[i].transform.GetChild(1).gameObject.SetActive(false);
+                    }
+                    uiManager.currentTip = null;
+                }
+            }
+        }
     }
 }

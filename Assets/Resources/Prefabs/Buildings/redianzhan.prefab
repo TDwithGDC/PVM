@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7726115042510098350}
   - component: {fileID: 8409936601362174385}
-  - component: {fileID: 818297196117866156}
   m_Layer: 9
   m_Name: redianzhan
   m_TagString: Untagged
@@ -82,19 +81,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!65 &818297196117866156
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8291806159063342887}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 3.25, y: 3.15, z: 0.5}
-  m_Center: {x: 0, y: 0, z: -0.27}
 --- !u!1 &8464394222023114997
 GameObject:
   m_ObjectHideFlags: 0
@@ -104,7 +90,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 476229702841137987}
+  - component: {fileID: 235227163663461998}
   - component: {fileID: 3058442107439330391}
+  - component: {fileID: 7487328585634282323}
   m_Layer: 9
   m_Name: redianzhan
   m_TagString: Untagged
@@ -127,6 +115,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &235227163663461998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8464394222023114997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89b351d55169e1c469f828b128ab6c2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingType: 4
+  HP: 0
+  isConnectToMainBase: 0
+  running: 1
+  efficiency: 0
+  fuelType: 2
+  coalEfficiency: 3
+  logEfficiency: 1
 --- !u!212 &3058442107439330391
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -177,3 +185,16 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &7487328585634282323
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8464394222023114997}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.14, y: 0.14, z: 0.05}
+  m_Center: {x: 0, y: 0, z: 0.0265}

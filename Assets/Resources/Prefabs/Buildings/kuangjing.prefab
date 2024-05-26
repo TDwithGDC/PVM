@@ -46,15 +46,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b6a66417936f0749a3055b0ce27947c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingType: 1
   HP: 0
   isConnectToMainBase: 0
   running: 1
   type: 0
   selectedPoint: {fileID: 0}
-  ironEfficiency: 1
-  coalEfficiency: 1.5
+  efficiency: 0
   findRadius: 0.15
   findTime: 2
+  ironEfficiency: 1
+  coalEfficiency: 1.5
 --- !u!212 &3783072758188200531
 SpriteRenderer:
   m_ObjectHideFlags: 0
