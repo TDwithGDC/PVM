@@ -22,7 +22,6 @@ public class YunShuZhongXin : Building
         }
     }
 
-    // ReSharper disable Unity.PerformanceAnalysis
     /// <summary>
     /// 更新连接
     /// </summary>
@@ -41,7 +40,7 @@ public class YunShuZhongXin : Building
             connectedBuildings = colliders;
             for (int i = 0; i < colliders.Length; i++)
             {
-                if (colliders[i].gameObject.name== "MainBase(Clone)")
+                if (colliders[i].GetComponent<Building>().isConnectToMainBase)
                 {
                     isConnectToMainBase = true;
                 }

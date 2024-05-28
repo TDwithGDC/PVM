@@ -23,11 +23,12 @@ public enum BuildingTypes
 {
     YunShuZhongXin=0,
     KuangJing=1,
-    CaiShiChang = 2,
-    FaMuChang = 3,
-    ReDianZhan = 4,
+    FaMuChang = 2,
+    MainBase = 3,
+    CaiShiChang = 4,
     HeDianZhan = 5,
     ChouShuiJi = 6,
     LianTieChang = 7,
     MuCaiJiaGongChang = 8,
+    ReDianZhan = 9,
 }

@@ -121,7 +121,6 @@ public class GameManager : MonoBehaviour
             {
                 if (hit.collider.gameObject.layer==9)//点击了建筑
                 {
-                    selectedBuildingToBuild = null;
                     selectedBuilding = hit.collider.gameObject;
                     //关掉所有的提示框，显示当前建筑物的提示框
                     uiManager.CloseAllTips();
@@ -131,16 +130,32 @@ public class GameManager : MonoBehaviour
                     tipGo.transform.position = Input.mousePosition;
                     uiManager.currentTip = tipGo;
                 }
-                else if (selectedBuildingToBuild == null)
+                else
                 {
                     uiManager.CloseAllTips();
                     selectedBuilding = null;
-                    for (int i = 0; i < uiManager.cardSlotsInGame.Count; i++)
-                    {
-                        uiManager.cardSlotsInGame[i].transform.GetChild(1).gameObject.SetActive(false);
-                    }
                     uiManager.currentTip = null;
                 }
+            }
+        }
+    }
+
+    /// <summary>
+    /// 游戏快捷键
+    /// </summary>
+
+    private void ShortCutKeys()
+    {
+        //按下esc关闭提示框或取消放置建筑
+        if (Input.GetKeyDown(KeyCode.Escape) && ((selectedBuilding != null) || (selectedBuildingToBuild != null)))
+        {
+            uiManager.CloseAllTips();
+            uiManager.currentTip = null;
+            selectedBuilding = null;
+            selectedBuildingToBuild = null;
+            for (int i = 0; i < uiManager.cardSlotsInGame.Count; i++)
+            {
+                uiManager.cardSlotsInGame[i].transform.GetChild(1).gameObject.SetActive(false);
             }
         }
     }
