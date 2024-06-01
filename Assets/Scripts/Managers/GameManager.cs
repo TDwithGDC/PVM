@@ -24,6 +24,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject selectedBuilding;//已选择的建筑
 
+    public bool isOpeningStore;//是否打开商店
+
     private void Awake()
     {
         Game = this;
@@ -48,6 +50,7 @@ public class GameManager : MonoBehaviour
         else if (gameStage == 3)//开始游戏
         {
             BuildingTip();
+            ShortCutKeys();
         }
         PlaceBuilding();
     }
@@ -78,16 +81,29 @@ public class GameManager : MonoBehaviour
                     }
                     return;
                 }
-                if (gameStage==3)//开始游戏
+                if ((gameStage==3) && !isOpeningStore)//开始游戏
                 {
                     RaycastHit hit = RaycastFromMousePosition();
                     if (hit.collider)
                     {
                         if (hit.collider.gameObject.layer == 8)
                         {
-                            GameObject go = Instantiate(selectedBuildingToBuild, hit.collider.transform.GetChild(0).transform.position, hit.collider.transform.GetChild(0).transform.rotation);
-                            go.transform.SetParent(hit.collider.transform.GetChild(0).transform);
-                            Debug.Log("放置了" + go.name);
+                            Building b = selectedBuildingToBuild.GetComponent<Building>();
+                            //判断是否可以放置
+                            if ((b.buildingDepletion.depletion[0] <= resourcesManager.steel) && 
+                                (b.buildingDepletion.depletion[1] <= resourcesManager.wood) &&
+                                (b.buildingDepletion.depletion[2] <= resourcesManager.stone) &&
+                                (b.buildingDepletion.depletion[3] <= resourcesManager.money))
+                            {
+                                GameObject go = Instantiate(selectedBuildingToBuild, hit.collider.transform.GetChild(0).transform.position, hit.collider.transform.GetChild(0).transform.rotation);
+                                go.transform.SetParent(hit.collider.transform.GetChild(0).transform);
+                                Debug.Log("放置了" + go.name);
+                                //扣除相应资源
+                                resourcesManager.steel -= b.buildingDepletion.depletion[0];
+                                resourcesManager.wood -= b.buildingDepletion.depletion[1];
+                                resourcesManager.stone -= b.buildingDepletion.depletion[2];
+                                resourcesManager.money -= b.buildingDepletion.depletion[3];
+                            }
                         }
                     }
                     return;
@@ -132,9 +148,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    uiManager.CloseAllTips();
-                    selectedBuilding = null;
-                    uiManager.currentTip = null;
+                    CloseTips();
                 }
             }
         }
@@ -149,14 +163,33 @@ public class GameManager : MonoBehaviour
         //按下esc关闭提示框或取消放置建筑
         if (Input.GetKeyDown(KeyCode.Escape) && ((selectedBuilding != null) || (selectedBuildingToBuild != null)))
         {
-            uiManager.CloseAllTips();
-            uiManager.currentTip = null;
-            selectedBuilding = null;
+            CloseTips();
             selectedBuildingToBuild = null;
             for (int i = 0; i < uiManager.cardSlotsInGame.Count; i++)
             {
                 uiManager.cardSlotsInGame[i].transform.GetChild(1).gameObject.SetActive(false);
             }
         }
+        //按E打开关闭商店
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            //打开商店UI
+            isOpeningStore = !isOpeningStore;
+            uiManager.storeGo.SetActive(isOpeningStore);
+            //关闭卡槽UI
+            uiManager.cardSlotsInGameGo.SetActive(!isOpeningStore);
+            CloseTips();//关闭提示框
+        }
+    }
+
+    /// <summary>
+    /// 关闭提示框
+    /// </summary>
+
+    public void CloseTips()
+    {
+        uiManager.CloseAllTips();
+        selectedBuilding = null;
+        uiManager.currentTip = null;
     }
 }

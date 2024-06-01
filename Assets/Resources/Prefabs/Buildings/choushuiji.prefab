@@ -47,6 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildingType: 6
+  buildingDepletion:
+    depletion: 0200000032000000640000002c010000
   HP: 0
   isConnectToMainBase: 0
   running: 1

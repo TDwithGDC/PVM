@@ -1560,6 +1560,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f87caab4107a7459b6069666da9239, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingType: 0
+  buildingDepletion:
+    depletion: 0200000032000000640000002c010000
   HP: 0
   isConnectToMainBase: 0
   running: 1

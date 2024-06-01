@@ -26,5 +26,8 @@ public enum ResourcesTypes
     Stone,
     Coal,
     Water,
-    Log
+    Log,
+    Steel,
+    Food,
+    Wood,
 }

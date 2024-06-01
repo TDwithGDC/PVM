@@ -18,15 +18,25 @@ public class UIManager : MonoBehaviour
     public Sprite defaultSprite;//没有选择，默认图片
     public Button startButton;//开始游戏按钮
     public List<Button> cardSlotsInGame;//游戏开始后的卡槽
+    public GameObject cardSlotsInGameGo;
 
     //建筑提示框
     public List<GameObject> tips;//所有建筑的提示框
     public Dictionary<BuildingTypes, GameObject> tipsDict;//用于精确获取提示框
     public GameObject currentTip;//当前提示框
+    public GameObject buildingDepletionTip;//建造所需提示框
+
+    //商店
+    public GameObject storeGo;//商店游戏物体
+
+    //资源显示
+    public List<Text> resourcesTexts;
+    private float updateResourcesTextsTimer;
 
     private void Start()
     {
         currentPage = 1;
+        updateResourcesTextsTimer = 2;
         //tipsDict初始化
         tipsDict = new Dictionary<BuildingTypes, GameObject>();
         for (int i = 0; i < tips.Count; i++)
@@ -37,6 +47,12 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
+        updateResourcesTextsTimer += Time.deltaTime;
+        if (updateResourcesTextsTimer >= 2)
+        {
+            updateResourcesTextsTimer = 0;
+            UpdateResourcesText();
+        }
         if (GameManager.Game.gameStage==2)
         {
             UpdateCardSlots();
@@ -51,14 +67,6 @@ public class UIManager : MonoBehaviour
         }
         if (GameManager.Game.gameStage==3)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))//取消选择
-            {
-                for (int i = 0; i < GameManager.Game.cardSlotsInGame.transform.childCount; i++)
-                {
-                    GameManager.Game.cardSlotsInGame.transform.GetChild(i).GetChild(1).gameObject.SetActive(false);
-                }
-                GameManager.Game.selectedBuildingToBuild = null;
-            }
             if (currentTip != null)
             {
                 UpdateTip();
@@ -129,6 +137,26 @@ public class UIManager : MonoBehaviour
         {
             text.text = "开采的资源：铁";
             k.type = ResourcesTypes.Iron;
+        }
+    }
+
+    /// <summary>
+    /// 切换燃料类型
+    /// </summary>
+
+    public void ChangeFuelType()
+    {
+        ReDianZhan k = GameManager.Game.selectedBuilding.GetComponent<ReDianZhan>();
+        Text text = currentTip.transform.Find("ChangeType").GetChild(1).GetComponent<Text>();
+        if (k.fuelType == ResourcesTypes.Coal)
+        {
+            text.text = "使用的燃料：原木";
+            k.fuelType = ResourcesTypes.Log;
+        }
+        else
+        {
+            text.text = "使用的燃料：煤";
+            k.fuelType = ResourcesTypes.Coal;
         }
     }
 
@@ -270,6 +298,158 @@ public class UIManager : MonoBehaviour
         }
         GameManager.Game.selectedBuildingToBuild = selectedBuildings[int.Parse(EventSystem.current.currentSelectedGameObject.name) - 1];
         go.transform.GetChild(1).gameObject.SetActive(true);
+    }
+
+    #endregion
+
+    #region 商店
+
+    /// <summary>
+    /// 关闭商店
+    /// </summary>
+
+    public void CloseStore()
+    {
+        GameManager.Game.isOpeningStore = false;
+        storeGo.SetActive(false);
+        cardSlotsInGameGo.SetActive(true);
+    }
+
+    /// <summary>
+    /// 进口资源
+    /// </summary>
+
+    public void ImportResources()
+    {
+        Transform trans = EventSystem.current.currentSelectedGameObject.transform;
+        if (int.Parse(trans.GetChild(1).name) <= GameManager.Game.resourcesManager.money)
+        {
+            GameManager.Game.resourcesManager.money -= int.Parse(trans.GetChild(1).name);
+            int add = int.Parse(trans.GetChild(0).name);
+            switch ((ResourcesTypes)System.Enum.Parse(typeof(ResourcesTypes),trans.GetChild(2).name))
+            {
+                case ResourcesTypes.Iron:
+                    GameManager.Game.resourcesManager.iron += add;
+                    break;
+                case ResourcesTypes.Stone:
+                    GameManager.Game.resourcesManager.stone += add;
+                    break;
+                case ResourcesTypes.Coal:
+                    GameManager.Game.resourcesManager.coal += add;
+                    break;
+                case ResourcesTypes.Water:
+                    GameManager.Game.resourcesManager.water += add;
+                    break;
+                case ResourcesTypes.Log:
+                    GameManager.Game.resourcesManager.log += add;
+                    break;
+                case ResourcesTypes.Food:
+                    GameManager.Game.resourcesManager.food += add;
+                    break;
+                case ResourcesTypes.Steel:
+                    GameManager.Game.resourcesManager.steel += add;
+                    break;
+                case ResourcesTypes.Wood:
+                    GameManager.Game.resourcesManager.wood += add;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 出口资源
+    /// </summary>
+
+    public void OutletResources()
+    {
+        Transform trans = EventSystem.current.currentSelectedGameObject.transform;
+        int need = int.Parse(trans.GetChild(1).name);
+        int add = int.Parse(trans.GetChild(0).name);
+        switch ((ResourcesTypes)System.Enum.Parse(typeof(ResourcesTypes),trans.GetChild(2).name))
+        {
+            case ResourcesTypes.Iron:
+                if (need <= GameManager.Game.resourcesManager.iron)
+                {
+                    GameManager.Game.resourcesManager.iron -= need;
+                    GameManager.Game.resourcesManager.money += add;
+                }
+                break;
+            case ResourcesTypes.Stone:
+                if (need <= GameManager.Game.resourcesManager.stone)
+                {
+                    GameManager.Game.resourcesManager.stone -= need;
+                    GameManager.Game.resourcesManager.money += add;
+                }
+                break;
+            case ResourcesTypes.Coal:
+                if (need <= GameManager.Game.resourcesManager.coal)
+                {
+                    GameManager.Game.resourcesManager.coal -= need;
+                    GameManager.Game.resourcesManager.money += add;
+                }
+                break;
+            case ResourcesTypes.Water:
+                if (need <= GameManager.Game.resourcesManager.water)
+                {
+                    GameManager.Game.resourcesManager.water -= need;
+                    GameManager.Game.resourcesManager.money += add;
+                }
+                break;
+            case ResourcesTypes.Log:
+                if (need <= GameManager.Game.resourcesManager.log)
+                {
+                    GameManager.Game.resourcesManager.log -= need;
+                    GameManager.Game.resourcesManager.money += add;
+                }
+                break;
+            case ResourcesTypes.Steel:
+                if (need <= GameManager.Game.resourcesManager.steel)
+                {
+                    GameManager.Game.resourcesManager.steel -= need;
+                    GameManager.Game.resourcesManager.money += add;
+                }
+                break;
+            case ResourcesTypes.Food:
+                if (need <= GameManager.Game.resourcesManager.food)
+                {
+                    GameManager.Game.resourcesManager.food -= need;
+                    GameManager.Game.resourcesManager.money += add;
+                }
+                break;
+            case ResourcesTypes.Wood:
+                if (need <= GameManager.Game.resourcesManager.wood)
+                {
+                    GameManager.Game.resourcesManager.wood -= need;
+                    GameManager.Game.resourcesManager.money += add;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    #endregion
+
+    #region 资源数量显示
+
+    /// <summary>
+    /// 更新资源显示的文本
+    /// </summary>
+
+    private void UpdateResourcesText()
+    {
+        resourcesTexts[0].text = "铁:" + GameManager.Game.resourcesManager.iron + "kg";
+        resourcesTexts[1].text = "煤:" + GameManager.Game.resourcesManager.coal + "kg";
+        resourcesTexts[2].text = "原木:" + GameManager.Game.resourcesManager.log + "kg";
+        resourcesTexts[3].text = "石头:" + GameManager.Game.resourcesManager.stone + "kg";
+        resourcesTexts[4].text = "水:" + GameManager.Game.resourcesManager.water + "kg";
+        resourcesTexts[5].text = "钢:" + GameManager.Game.resourcesManager.steel + "kg";
+        resourcesTexts[6].text = "木材:" + GameManager.Game.resourcesManager.wood + "kg";
+        resourcesTexts[7].text = "食物:" + GameManager.Game.resourcesManager.food + "kg";
+        resourcesTexts[8].text = "电:" + GameManager.Game.resourcesManager.power + "KW";
+        resourcesTexts[9].text = "钱:" + GameManager.Game.resourcesManager.money + "元";
     }
 
     #endregion
