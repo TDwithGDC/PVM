@@ -11,9 +11,33 @@ public class Building : PVM
     //基础信息
     public BuildingTypes buildingType;
     public BuildingDepletion buildingDepletion;
+    public List<float> runDepletion;//运行消耗(0食物1钱2水)
     public int HP;
     public bool isConnectToMainBase;//是否连接到主基地
     public bool running;//是否在运行
+
+    private float runDepleteTimer;
+
+    protected virtual void Update()
+    {
+        runDepleteTimer += Time.deltaTime;
+        if (runDepleteTimer>=1)
+        {
+            runDepleteTimer = 0;
+            RunDepletion();
+        }
+    }
+
+    /// <summary>
+    /// 运行消耗
+    /// </summary>
+
+    protected void RunDepletion()
+    {
+        GameManager.Game.resourcesManager.food -= runDepletion[0];
+        GameManager.Game.resourcesManager.money -= runDepletion[1];
+        GameManager.Game.resourcesManager.water -= runDepletion[2];
+    }
 }
 
 /// <summary>
@@ -32,6 +56,9 @@ public enum BuildingTypes
     LianTieChang = 7,
     MuCaiJiaGongChang = 8,
     ReDianZhan = 9,
+    GengDi = 10,
+    ZaJiaoShuiDao = 11,
+    NongYeDaPeng = 12,
 }
 
 /// <summary>

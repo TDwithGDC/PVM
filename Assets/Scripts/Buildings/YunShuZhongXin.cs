@@ -12,8 +12,9 @@ public class YunShuZhongXin : Building
     public float checkTime;//每隔多少时间更新一次连接
     private float checkTimer;
 
-    private void Update()
+    protected override void Update()
     {
+        base.Update();
         checkTimer += Time.deltaTime;
         if (checkTimer>=checkTime)
         {

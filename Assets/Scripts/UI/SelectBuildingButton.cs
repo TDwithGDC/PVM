@@ -14,6 +14,10 @@ public class SelectBuildingButton : MonoBehaviour,IPointerEnterHandler,IPointerE
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        //更新内容
+        /* 先注释掉，目前还没有开发完毕所有的建筑，会报错 */
+        //buildingDepletion = Resources.Load<Building>("Prefabs/Buildings/" + GetComponent<Image>().sprite.name).buildingDepletion;
+
         GameManager.Game.uiManager.buildingDepletionTip.SetActive(true);
         GameManager.Game.uiManager.buildingDepletionTip.transform.position = Input.mousePosition;
         GameManager.Game.uiManager.buildingDepletionTip.transform.GetChild(1).GetComponent<Text>().text =

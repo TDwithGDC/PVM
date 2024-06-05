@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 
     public UIManager uiManager; // UI管理器
     public GameResourcesManager resourcesManager; // 游戏资源管理器
+    public WeatherManager weatherManager;
 
     public GameObject map;//游戏地图
     public int gameStage;//游戏阶段

@@ -440,16 +440,16 @@ public class UIManager : MonoBehaviour
 
     private void UpdateResourcesText()
     {
-        resourcesTexts[0].text = "铁:" + GameManager.Game.resourcesManager.iron + "kg";
-        resourcesTexts[1].text = "煤:" + GameManager.Game.resourcesManager.coal + "kg";
-        resourcesTexts[2].text = "原木:" + GameManager.Game.resourcesManager.log + "kg";
-        resourcesTexts[3].text = "石头:" + GameManager.Game.resourcesManager.stone + "kg";
-        resourcesTexts[4].text = "水:" + GameManager.Game.resourcesManager.water + "kg";
-        resourcesTexts[5].text = "钢:" + GameManager.Game.resourcesManager.steel + "kg";
-        resourcesTexts[6].text = "木材:" + GameManager.Game.resourcesManager.wood + "kg";
-        resourcesTexts[7].text = "食物:" + GameManager.Game.resourcesManager.food + "kg";
-        resourcesTexts[8].text = "电:" + GameManager.Game.resourcesManager.power + "KW";
-        resourcesTexts[9].text = "钱:" + GameManager.Game.resourcesManager.money + "元";
+        resourcesTexts[0].text = "铁:" + (int)GameManager.Game.resourcesManager.iron + "kg";
+        resourcesTexts[1].text = "煤:" + (int)GameManager.Game.resourcesManager.coal + "kg";
+        resourcesTexts[2].text = "原木:" + (int)GameManager.Game.resourcesManager.log + "kg";
+        resourcesTexts[3].text = "石头:" + (int)GameManager.Game.resourcesManager.stone + "kg";
+        resourcesTexts[4].text = "水:" + (int)GameManager.Game.resourcesManager.water + "kg";
+        resourcesTexts[5].text = "钢:" + (int)GameManager.Game.resourcesManager.steel + "kg";
+        resourcesTexts[6].text = "木材:" + (int)GameManager.Game.resourcesManager.wood + "kg";
+        resourcesTexts[7].text = "食物:" + (int)GameManager.Game.resourcesManager.food + "kg";
+        resourcesTexts[8].text = "电:" + (int)GameManager.Game.resourcesManager.power + "KW";
+        resourcesTexts[9].text = "钱:" + (int)GameManager.Game.resourcesManager.money + "元";
     }
 
     #endregion

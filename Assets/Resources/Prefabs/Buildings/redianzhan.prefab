@@ -130,6 +130,10 @@ MonoBehaviour:
   buildingType: 9
   buildingDepletion:
     depletion: 0200000032000000640000002c010000
+  runDepletion:
+  - 0
+  - 0
+  - 0
   HP: 0
   isConnectToMainBase: 0
   running: 1

@@ -16,8 +16,9 @@ public class Miner : Building
     public float findTime;//查找时间
     protected float findTimer;
 
-    protected virtual void Update()
+    protected override void Update()
     {
+        base.Update();
         findTimer += Time.deltaTime;
         if (findTimer >= findTime)
         {

@@ -10,8 +10,9 @@ public class Factory : Building
 {
     public float efficiency;//效率（每秒多少千克）
 
-    protected void Update()
+    protected override void Update()
     {
+        base.Update();
         if (running && isConnectToMainBase)
         {
             Machining();
