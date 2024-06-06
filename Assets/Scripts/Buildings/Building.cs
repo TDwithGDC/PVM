@@ -11,7 +11,7 @@ public class Building : PVM
     //基础信息
     public BuildingTypes buildingType;
     public BuildingDepletion buildingDepletion;
-    public List<float> runDepletion;//运行消耗(0食物1钱2水)
+    public List<float> runDepletion=new List<float>(3);//运行消耗(0食物1钱2水)
     public int HP;
     public bool isConnectToMainBase;//是否连接到主基地
     public bool running;//是否在运行
@@ -20,11 +20,14 @@ public class Building : PVM
 
     protected virtual void Update()
     {
-        runDepleteTimer += Time.deltaTime;
-        if (runDepleteTimer>=1)
+        if (GameManager.Game.gameStage == 3)
         {
-            runDepleteTimer = 0;
-            RunDepletion();
+            runDepleteTimer += Time.deltaTime;
+            if (runDepleteTimer >= 1)
+            {
+                runDepleteTimer = 0;
+                RunDepletion();
+            }
         }
     }
 
