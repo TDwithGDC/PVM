@@ -112,6 +112,7 @@ public class WeatherManager : MonoBehaviour
                 {2,new Dictionary<int, float>{{1,0 },{2,0.36f },{3,0.67f },{4,1.33f },{5,1.67f },{6,2.5f },{7,6.67f },{8,8 },{9,2.33f },{10,1.33f },{11,0.67f },{12,0.07f }} },
             }},
         };
+        GameManager.Game.enemyManager.NextWave();
     }
 
     private void Update()
@@ -140,12 +141,14 @@ public class WeatherManager : MonoBehaviour
                                 {
                                     day = 1;
                                     month++;
+                                    GameManager.Game.enemyManager.NextWave();
                                 }
                             }
                             else
                             {
                                 day = 1;
                                 month++;
+                                GameManager.Game.enemyManager.NextWave();
                             }
                             break;
                         //30天
@@ -157,6 +160,7 @@ public class WeatherManager : MonoBehaviour
                             {
                                 day = 1;
                                 month++;
+                                GameManager.Game.enemyManager.NextWave();
                             }
                             break;
                         //31天
@@ -170,6 +174,7 @@ public class WeatherManager : MonoBehaviour
                             {
                                 day = 1;
                                 month++;
+                                GameManager.Game.enemyManager.NextWave();
                             }
                             break;
                         //下一年
@@ -179,6 +184,7 @@ public class WeatherManager : MonoBehaviour
                                 day = 1;
                                 month = 1;
                                 year++;
+                                GameManager.Game.enemyManager.NextWave();
                             }
                             break;
                         default:

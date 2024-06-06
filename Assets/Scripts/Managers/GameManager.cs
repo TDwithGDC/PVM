@@ -32,7 +32,6 @@ public class GameManager : MonoBehaviour
     {
         Game = this;
         gameStage = 1;
-        Instantiate(map, Vector2.zero, Quaternion.Euler(new Vector3(-90,0,0)));//生成地图
     }
 
     private void Update()
