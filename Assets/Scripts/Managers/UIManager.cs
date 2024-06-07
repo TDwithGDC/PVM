@@ -355,6 +355,8 @@ public class UIManager : MonoBehaviour
                 default:
                     break;
             }
+            // 在每次购买后，更新文字
+            UpdateResourcesText();
         }
     }
 
@@ -428,6 +430,8 @@ public class UIManager : MonoBehaviour
             default:
                 break;
         }
+        // 在每次进口后，更新文字
+        UpdateResourcesText();
     }
 
     #endregion
@@ -438,18 +442,60 @@ public class UIManager : MonoBehaviour
     /// 更新资源显示的文本
     /// </summary>
 
-    private void UpdateResourcesText()
+    public void UpdateResourcesText()
     {
-        resourcesTexts[0].text = (int)GameManager.Game.resourcesManager.iron + "kg";
-        resourcesTexts[1].text = (int)GameManager.Game.resourcesManager.coal + "kg";
-        resourcesTexts[2].text = (int)GameManager.Game.resourcesManager.log + "kg";
-        resourcesTexts[3].text = (int)GameManager.Game.resourcesManager.stone + "kg";
-        resourcesTexts[4].text = (int)GameManager.Game.resourcesManager.water + "kg";
-        resourcesTexts[5].text = (int)GameManager.Game.resourcesManager.steel + "kg";
-        resourcesTexts[6].text = (int)GameManager.Game.resourcesManager.wood + "kg";
-        resourcesTexts[7].text = (int)GameManager.Game.resourcesManager.food + "kg";
-        resourcesTexts[8].text = (int)GameManager.Game.resourcesManager.power + "KW";
-        resourcesTexts[9].text = (int)GameManager.Game.resourcesManager.money + "￥";
+        resourcesTexts[0].text = LimitValue((int)GameManager.Game.resourcesManager.iron) + "kg";
+        RemindLowing(resourcesTexts[0], (int)GameManager.Game.resourcesManager.iron);
+        resourcesTexts[1].text = LimitValue((int)GameManager.Game.resourcesManager.coal) + "kg";
+        RemindLowing(resourcesTexts[1], (int)GameManager.Game.resourcesManager.coal);
+        resourcesTexts[2].text = LimitValue((int)GameManager.Game.resourcesManager.log) + "kg";
+        RemindLowing(resourcesTexts[2], (int)GameManager.Game.resourcesManager.log);
+        resourcesTexts[3].text = LimitValue((int)GameManager.Game.resourcesManager.stone) + "kg";
+        RemindLowing(resourcesTexts[3], (int)GameManager.Game.resourcesManager.stone);
+        resourcesTexts[4].text = LimitValue((int)GameManager.Game.resourcesManager.water) + "kg";
+        RemindLowing(resourcesTexts[4], (int)GameManager.Game.resourcesManager.water);
+        resourcesTexts[5].text = LimitValue((int)GameManager.Game.resourcesManager.steel) + "kg";
+        RemindLowing(resourcesTexts[5], (int)GameManager.Game.resourcesManager.steel);
+        resourcesTexts[6].text = LimitValue((int)GameManager.Game.resourcesManager.wood) + "kg";
+        RemindLowing(resourcesTexts[6], (int)GameManager.Game.resourcesManager.wood);
+        resourcesTexts[7].text = LimitValue((int)GameManager.Game.resourcesManager.food) + "kg";
+        RemindLowing(resourcesTexts[7], (int)GameManager.Game.resourcesManager.food);
+        resourcesTexts[8].text = LimitValue((int)GameManager.Game.resourcesManager.power) + "kw";
+        RemindLowing(resourcesTexts[8], (int)GameManager.Game.resourcesManager.power);
+        resourcesTexts[9].text = LimitValue((int)GameManager.Game.resourcesManager.money) + "rm";
+        RemindLowing(resourcesTexts[9], (int)GameManager.Game.resourcesManager.money);
+
+
+    }
+
+    private string LimitValue(int a)
+    {
+        if (a > 9999)
+        {
+            return "9999+";
+        }
+        return a.ToString();
+    }
+
+    private void RemindLowing(Text text,int a)
+    {
+        if (a <= 100)
+        {
+            text.color = new Color32(156, 7, 7,255);
+        }
+        else if(a <= 500)
+        {
+            text.color = new Color32(140, 70, 0,255);
+        }
+        
+        else if (a <= 1000)
+        {
+            text.color = new Color32(215, 215, 15,255);
+        }
+        else
+        {
+            text.color = new Color32(45, 45, 45, 255);
+        }
     }
 
     #endregion
