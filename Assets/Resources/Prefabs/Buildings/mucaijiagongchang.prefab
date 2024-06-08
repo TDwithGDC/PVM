@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4825949180839097597}
   m_Layer: 9
   m_Name: mucaijiagongchang
-  m_TagString: Untagged
+  m_TagString: Building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

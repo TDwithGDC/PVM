@@ -14,6 +14,7 @@ public class Enemy : PVM
     public int level;//强度
     public float speed;
     public float damage;
+    public float attackCD; // 攻击间隔
 
     private GameObject movePoint; // 移动的目标点
     public CharacterController contrller;
@@ -21,6 +22,8 @@ public class Enemy : PVM
 
     private Transform movePointTrans, thisTrans, movePointFatherTrans;
     private bool needMove = true;
+    private bool canAttack = true;
+    private float tempIntForAttackCD = 0;
 
     public void Start()
     {
@@ -32,18 +35,18 @@ public class Enemy : PVM
         movePointTrans = movePoint.transform;
     }
 
-
+    #region 移动
     public void Move()
     {
         // 进行移动
-        if(!movePoint) movePoint = FindBestMovePoint();
-        if(needMove)contrller.Move((movePointTrans.position-thisTrans.position).normalized*(Time.deltaTime*speed));
+        if (!movePoint) movePoint = FindBestMovePoint();
+        if (needMove) contrller.Move((movePointTrans.position - thisTrans.position).normalized * (Time.deltaTime * speed));
 
         // 到达了节点附近
         if (IsArrive())
         {
             // 获取下一个节点
-            EnemyMovePoint movingPointScript= movePointTrans.gameObject.GetComponent<EnemyMovePoint>();
+            EnemyMovePoint movingPointScript = movePointTrans.gameObject.GetComponent<EnemyMovePoint>();
             if (movingPointScript)
             {
                 GameObject next = movingPointScript.nextPoint;
@@ -59,9 +62,9 @@ public class Enemy : PVM
                     movePointTrans = next.transform;
                 }
             }
-            
-                
-            
+
+
+
         }
     }
 
@@ -73,22 +76,49 @@ public class Enemy : PVM
 
     public GameObject FindBestMovePoint()
     {
-        float lessetDistance=Mathf.Infinity; // 定义为无穷大
+        float lessetDistance = Mathf.Infinity; // 定义为无穷大
         GameObject result = null;
         UnityEngine.Debug.Log(movePointFatherTrans);
-        for (int i = 0; i< movePointFatherTrans.childCount; i++)
+        for (int i = 0; i < movePointFatherTrans.childCount; i++)
         {
-            
+
             GameObject currentPoint = movePointFatherTrans.GetChild(i).gameObject;
             float distance = Vector3.Distance(thisTrans.position, currentPoint.transform.position);
-            if (distance < lessetDistance) 
-            { 
+            if (distance < lessetDistance)
+            {
                 result = currentPoint;
                 lessetDistance = distance;
             }
         }
 
         return result;
-        
+
+    }
+    #endregion
+
+    public void Update()
+    {
+        // 每隔一定时间进行攻击
+        tempIntForAttackCD += Time.deltaTime;
+        if (tempIntForAttackCD >= attackCD)
+        {
+            Attack();
+        }
+    }
+
+    private void Attack()
+    {
+        GameObject attackObject = FindAttackObject(); 
+        if (attackObject&&canAttack) // canAttack目前仅作预留
+        {
+            // 如果可以攻击
+            attackObject.GetComponent<ChangeBuilding>().GetHurt(damage);
+        }
+    }
+
+    private GameObject FindAttackObject()
+    {
+        // 此处寻找在攻击范围内最近的建筑物
+        return null;
     }
 }

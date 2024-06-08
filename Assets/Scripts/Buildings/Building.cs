@@ -5,8 +5,11 @@ using UnityEngine;
 /// <summary>
 /// 所有建筑的基类
 /// </summary>
+/// 
 
-public class Building : PVM
+// 2024 6 8 TD 添加接口ChangeBuilding，并实现GetHurt
+
+public class Building : PVM,ChangeBuilding
 {
     //基础信息
     public BuildingTypes buildingType;
@@ -40,6 +43,16 @@ public class Building : PVM
         GameManager.Game.resourcesManager.food -= runDepletion[0];
         GameManager.Game.resourcesManager.money -= runDepletion[1];
         GameManager.Game.resourcesManager.water -= runDepletion[2];
+    }
+
+    /// <summary>
+    /// 接口方法：受到伤害
+    /// 接口：ChangeBuilding 位于基类Building中
+    /// </summary>
+    /// <param name="damage">伤害值</param>
+    public void GetHurt(float damage)
+    {
+        HP  = (int)Mathf.Clamp(HP-damage,0,99999); // 限制血量
     }
 }
 
